@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+  <title>To do list</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div 
+    class="container" 
+    id="app" 
+    v-cloak
+  >
+    <div class="card-panel">
+      <h1>Список дел</h1>
+      <input 
+        type="text" 
+        placeholder="Введите текст задачи"
+        v-model="note"
+        @keyup.enter="addNote"
+      />
+      <button 
+        class="btn blue darken-1"
+        @click="addNote"
+      >Записать
+      </button>
+      <h4 v-if="activeNotes.length">Активные задачи</h4>
+      <ol 
+        class="collection"
+        v-if="activeNotes.length"
+      >
+        <li 
+          v-for="(item, i) in activeNotes" 
+          :key="item"
+        >
+          <label :for="item.time">
+            <input 
+              type="checkbox" 
+              :id="item.time" 
+              v-model="activeNotes[i].isDone"
+              @change="changeChecked(i)"
+            />
+            <span>{{item.note}}</span><br>
+            <span>{{item.time}}</span>
+          </label>
+          <button 
+            class="btn-small right" 
+            @click="removeNote(item)"
+          >Удалить
+          </button>
+          <hr>
+        </li>
+      </ol>
+      <div v-show="activeNotes.length == 0">Нет активных задач. Добавьте первую.</div>
+      <h4 v-if="finishNotes.length">Выполненные задачи</h4>
+      <ol 
+        class="collection" 
+        v-if="finishNotes.length"
+      >
+        <li 
+          v-for="(item, i) of finishNotes" 
+          :key="item"
+        >
+          <label :for="item.time">
+            <input 
+              type="checkbox" 
+              :id="item.time" 
+              v-model="finishNotes[i].isDone" 
+              @change="changeChecked(i)"
+            />
+            <span>{{item.note}}</span><br>
+            <span>{{item.time}}</span>
+          </label>
+          <button 
+            class="btn-small right" 
+            @click="removeNote(item)"
+          >Удалить</button>
+          <hr>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="script.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+</body>
+</html>
